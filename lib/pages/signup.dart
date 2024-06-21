@@ -1,4 +1,6 @@
 import 'package:electroshop/pages/bottomnav.dart';
+import 'package:electroshop/services/database.dart';
+import 'package:electroshop/services/shared_preference.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:electroshop/pages/login.dart';
@@ -29,12 +31,17 @@ class _SignupState extends State<Signup> {
           backgroundColor: Colors.greenAccent,
           content: Text("User registered succesfully",style: TextStyle(fontSize: 20),)));
           String Id=randomAlphaNumeric(10);
+          await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
+          await SharedPreferenceHelper().saveUserName(namecontroller.text);
+          await SharedPreferenceHelper().saveUserId(Id);
+          await SharedPreferenceHelper().saveUserImage("https://www.bing.com/images/search?view=detailV2&ccid=E2zFDYn5&id=76EB81ACBCD3F7350CA8F5D1267CC3CD2E8B732C&thid=OIP.E2zFDYn5F-6Lggs5u6qY1AHaHa&mediaurl=https%3a%2f%2fwww.shareicon.net%2fdata%2f512x512%2f2016%2f05%2f24%2f770117_people_512x512.png&exph=512&expw=512&q=person+profile+image+animated&;simid=608027448453367246&FORM=IRPRST&ck=E95B3265BFCC10C203E96192FAB99BDB&selectedIndex=0&itb=1&idpp=overlayview&ajaxhist=0&ajaxserp=0");
           Map<String,dynamic> userInfoMap={
             "Name":namecontroller.text,
             "Email":mailcontroller.text,
             "Id":Id,
             "Image":"https://www.bing.com/images/search?view=detailV2&ccid=E2zFDYn5&id=76EB81ACBCD3F7350CA8F5D1267CC3CD2E8B732C&thid=OIP.E2zFDYn5F-6Lggs5u6qY1AHaHa&mediaurl=https%3a%2f%2fwww.shareicon.net%2fdata%2f512x512%2f2016%2f05%2f24%2f770117_people_512x512.png&exph=512&expw=512&q=person+profile+image+animated&simid=608027448453367246&FORM=IRPRST&ck=E95B3265BFCC10C203E96192FAB99BDB&selectedIndex=0&itb=1&idpp=overlayview&ajaxhist=0&ajaxserp=0"
           };
+          await DatabaseMethods().addUserDetails(userInfoMap, Id);
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomnav()));
       }on FirebaseAuthException catch (e) {
         if(e.code=='weak-password'){
