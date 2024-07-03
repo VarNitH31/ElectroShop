@@ -1,3 +1,4 @@
+import 'package:electroshop/Admin/add_product.dart';
 import 'package:electroshop/Admin/admin_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+
         useMaterial3: true,
+
       ),
-      home: AdminLogin(),
+      home: AddProduct(),
     );
   }
 }
