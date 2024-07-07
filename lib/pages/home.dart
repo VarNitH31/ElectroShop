@@ -1,3 +1,5 @@
+import 'package:electroshop/pages/categoryProducts.dart';
+import 'package:electroshop/services/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:electroshop/widget/support_widget.dart';
@@ -15,11 +17,43 @@ class _HomeState extends State<Home> {
     "images/TV.png"
   ];
 
+  List Categoryname=[
+    "Headphones",
+    "Laptop",
+    "Watch",
+    "TV"
+  ];
+   
+  String? name,image;
+
+  getthesharedpref()async{
+
+    name=await SharedPreferenceHelper().getUserName();
+    image=await SharedPreferenceHelper().getUserImage();
+    setState(() {
+      
+    });
+  } 
+
+  ontheload()async{
+    await getthesharedpref();
+    setState(() {
+      
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    ontheload();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 226, 222, 222),
-      body: Container(
+      body: name==null? Center(child: CircularProgressIndicator()):Container(
         margin: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +64,7 @@ class _HomeState extends State<Home> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hey,Varnith", style: AppWidget.boldTextFeildStyle()),
+                    Text("Hey,"+name!, style: AppWidget.boldTextFeildStyle()),
                     Text("Good Morning", style: AppWidget.lightTextFeildStyle()),
                   ],
                 ),
@@ -110,7 +144,7 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return categoryTile(image: categories[index]);
+                          return categoryTile(image: categories[index],name: Categoryname[index],);
                         }),
                   ),
                 ),
@@ -268,30 +302,35 @@ class _HomeState extends State<Home> {
 
 // ignore: must_be_immutable
 class categoryTile extends StatelessWidget {
-  String image;
-  categoryTile({required this.image});
+  String image,name;
+  categoryTile({required this.image,required this.name});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(right: 20.0),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      height: 90,
-      width: 90,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.asset(
-            image,
-            height: 50,
-            width: 50,
-            fit: BoxFit.cover,
-          ),
-          // SizedBox(height: 10,),
-          Icon(Icons.arrow_forward)
-        ],
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>CategoryProducts(category: name)));
+      },
+      child: Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.only(right: 20.0),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        height: 90,
+        width: 90,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              image,
+              height: 50,
+              width: 50,
+              fit: BoxFit.cover,
+            ),
+            // SizedBox(height: 10,),
+            Icon(Icons.arrow_forward)
+          ],
+        ),
       ),
     );
   }

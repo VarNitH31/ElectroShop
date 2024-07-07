@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
-      home: AddProduct(),
+      home: Signup(),
     );
   }
 }
@@ -46,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  @override
+  @override 
   State<MyHomePage> createState() => _MyHomePageState();
 }
 

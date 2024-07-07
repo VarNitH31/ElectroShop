@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:electroshop/widget/support_widget.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail({Key? key}) : super(key: key);
+  String image,name,detail,price;
+  ProductDetail({required this.image,required this.name,required this.detail,required this.price});
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -27,9 +28,13 @@ class _ProductDetailState extends State<ProductDetail> {
                   margin: EdgeInsets.only(left: 20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(30)),
-                  child: Icon(Icons.arrow_back_ios_new_outlined)),
-              ),
-              Center(child: Image.asset("images/headphone2.png",height: 400,))
+                  child: 
+                    Icon(Icons.arrow_back_ios_new_outlined))),
+              
+              Center(child: Container(
+                height: 300,
+                width: 300,
+                child: Image.network(widget.image,height: 400,fit: BoxFit.cover,)))
           ]),
 
           Expanded(
@@ -46,9 +51,9 @@ class _ProductDetailState extends State<ProductDetail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Headphone", style: AppWidget.boldTextFeildStyle(),),
+                      Text(widget.name, style: AppWidget.boldTextFeildStyle(),),
                       Text(
-                      "\$300",
+                      widget.price,
                       style: TextStyle(
                           color: Color(0xFFfd6f3e),
                           fontSize: 24.0,
@@ -57,9 +62,9 @@ class _ProductDetailState extends State<ProductDetail> {
                     ],
                   ),
                   SizedBox(height: 20.0,),
-                  Text("Details",style: AppWidget.semiboldTextFeildStyle(),),
+                  Text(widget.detail,style: AppWidget.semiboldTextFeildStyle(),),
                   SizedBox(height: 10,),
-                  Text("the product is very good and has an one year warranty and can be used forever to listen songs and make calls included with google AI and all other new things buy once and get to know the value of the headphones"),
+                  Text(widget.detail),
                   SizedBox(height: 75,),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
