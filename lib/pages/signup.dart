@@ -1,3 +1,4 @@
+import 'package:electroshop/Admin/admin_login.dart';
 import 'package:electroshop/pages/bottomnav.dart';
 import 'package:electroshop/services/database.dart';
 import 'package:electroshop/services/shared_preference.dart';
@@ -227,9 +228,24 @@ class _SignupState extends State<Signup> {
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
                     },
-                    child: Text("  Sign in",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),))
+                    child: Text("  Sign in",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),)),
+                    SizedBox(height: 25,),
                  ],
-                )
+                ),
+                    Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                  Text("Admin Login?",style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold) ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminLogin()));
+                    },
+                    child: Text("Admin Login",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),))
+                 ]),
+                 SizedBox(height: 20,)
               ],
             ),
           ),

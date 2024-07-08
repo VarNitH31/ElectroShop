@@ -55,31 +55,33 @@ class _CategoryProductsState extends State<CategoryProducts> {
                       Text(ds["Name"],
                           style: AppWidget.semiboldTextFeildStyle()),
                       Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(ds["Price"],
-                                style: AppWidget.orangeSemiboldTextFeildStyle()),
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(image: ds["Image"], name: ds["Name"], detail: ds["Details"], price: ds["Price"])));
-                            },
-                            child: Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFFD6F3E),
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                )),
-                          )
-                        ],
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text("Rs "+ds["Price"],
+                                  style: AppWidget.orangeSemiboldTextFeildStyle()),
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(image: ds["Image"], name: ds["Name"], detail: ds["Details"], price: ds["Price"])));
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFFD6F3E),
+                                      borderRadius: BorderRadius.circular(7)),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                            )
+                          ],
+                        ),
                       )
                     ]),
                   );

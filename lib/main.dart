@@ -1,5 +1,8 @@
 import 'package:electroshop/Admin/add_product.dart';
 import 'package:electroshop/Admin/admin_login.dart';
+import 'package:electroshop/Admin/all_orders.dart';
+import 'package:electroshop/Admin/home_admin.dart';
+import 'package:electroshop/services/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:electroshop/pages/bottomnav.dart';
@@ -8,11 +11,14 @@ import 'package:electroshop/pages/login.dart';
 import 'package:electroshop/pages/onboarding.dart';
 import 'package:electroshop/pages/productDetail.dart';
 import 'package:electroshop/pages/signup.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
+
 
 
 void main()async {
    WidgetsFlutterBinding.ensureInitialized();
+   Stripe.publishableKey=publishableKey;
  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
@@ -34,7 +40,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
-      home: Signup(),
+      home: Onboarding(),
     );
   }
 }
