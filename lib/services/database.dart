@@ -53,5 +53,25 @@ class DatabaseMethods {
   Future<QuerySnapshot>search(String UpdatedName)async{
     return await FirebaseFirestore.instance.collection("Products").where("SearchKey",isEqualTo:UpdatedName.substring(0,1).toUpperCase()).get();
   }
+Future<String?> searchName(String userEmail) async {
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("Email", isEqualTo: userEmail)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+      return data['Name'];
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print("Error retrieving user name: $e");
+    return null;
+  }
+}
+
+
 
 }

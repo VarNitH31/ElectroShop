@@ -38,7 +38,9 @@ class _ProfileState extends State<Profile> {
 
   Future getImage() async {
     var image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image!=null) {
     selectedImage = File(image!.path);
+    }
     uploadItem();
     setState(() {});
   }
@@ -68,7 +70,7 @@ class _ProfileState extends State<Profile> {
           : Container(
               child: Column(
                 children: [
-                  selectedImage != null
+                  image != null
                       ? GestureDetector(
                         onTap: (){
                                 getImage();
@@ -76,8 +78,8 @@ class _ProfileState extends State<Profile> {
                         child: Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
-                              child: Image.file(
-                              selectedImage!,
+                              child: Image.network(
+                              image!,
                               height: 150,
                               width: 150,
                               fit: BoxFit.cover,

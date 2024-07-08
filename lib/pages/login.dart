@@ -1,4 +1,5 @@
 import 'package:electroshop/pages/bottomnav.dart';
+import 'package:electroshop/services/database.dart';
 import 'package:electroshop/services/shared_preference.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String? email="",password="";
+  String? username;
   
   TextEditingController mailcontroller=new TextEditingController();
   TextEditingController passwordcontroller=new TextEditingController();
@@ -24,7 +26,10 @@ class _LoginState extends State<Login> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email!, password: password!);
-      await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
+      await SharedPreferenceHelper().saveUserEmail(email!);  
+      username=await DatabaseMethods().searchName(email!);    
+      await SharedPreferenceHelper().saveUserName(username!);
+
       Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomnav()));
 
     }on FirebaseAuthException catch (e) {

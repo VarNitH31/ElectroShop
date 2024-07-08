@@ -175,14 +175,28 @@ class _HomeState extends State<Home> {
                         Text("Good Morning", style: AppWidget.lightTextFeildStyle()),
                       ],
                     ),
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          "images/boy.jpg",
-                          height: 65,
-                          width: 65,
-                          fit: BoxFit.cover,
-                        ))
+                    image!= null
+                      ?  Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(60),
+                              child: Image.network(
+                              image!,
+                              height: 90,
+                              width: 90,
+                              fit: BoxFit.cover,
+                              ),
+                            ))
+                      :  Center(
+                            child: ClipRRect(
+                                     borderRadius: BorderRadius.circular(60),
+                              child: Image.asset(
+                              "images/boy.jpg",
+                              height: 70,
+                              width: 70,
+                              fit: BoxFit.cover,
+                                                        ),
+                            )),
+                      
                   ],
                 ),
                 SizedBox(height: 30.0),
@@ -290,7 +304,8 @@ class _HomeState extends State<Home> {
                   height: 230,
                   child:Column(
           children: [
-            Expanded(child: allProducts())
+            Expanded(child: allProducts()),
+            SizedBox(height: 30,)
           ],
         ),
                 )
