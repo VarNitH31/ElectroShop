@@ -51,21 +51,22 @@ class _CategoryProductsState extends State<CategoryProducts> {
                         width: 150,
                         fit: BoxFit.cover,
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(height: 10,),
                       Text(ds["Name"],
-                          style: AppWidget.semiboldTextFeildStyle()),
-                      Spacer(),
+                          style: TextStyle(
+                                          color: Colors.black54, fontSize: 15.0, fontWeight: FontWeight.bold),),
+                      SizedBox(height: 20,),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              child: Text("Rs "+ds["Price"],
-                                  style: AppWidget.orangeSemiboldTextFeildStyle()),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
+                             Text("Rs "+ds["Price"],
+                                  style:TextStyle(
+                                              color: Color(0xFFfd6f3e),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),),
+                            
+                            Spacer(),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(image: ds["Image"], name: ds["Name"], detail: ds["Details"], price: ds["Price"])));

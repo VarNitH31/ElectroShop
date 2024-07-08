@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electroshop/pages/categoryProducts.dart';
+import 'package:electroshop/pages/productDetail.dart';
 import 'package:electroshop/services/database.dart';
 import 'package:electroshop/services/shared_preference.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class _HomeState extends State<Home> {
   }
    
   String? name,image;
+  Stream? ProductStream;
 
   getthesharedpref()async{
 
@@ -80,6 +82,7 @@ class _HomeState extends State<Home> {
 
   ontheload()async{
     await getthesharedpref();
+    ProductStream=await DatabaseMethods().getAllProducts();
     setState(() {
       
     });
@@ -91,6 +94,66 @@ class _HomeState extends State<Home> {
     ontheload();
     super.initState();
   }
+
+
+  Widget allProducts(){
+    return StreamBuilder(stream: ProductStream, builder: (context, AsyncSnapshot snapshot){
+      return snapshot.hasData?GridView.builder(
+        padding: EdgeInsets.zero,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 0.6,mainAxisSpacing: 10,crossAxisSpacing: 10.0),itemCount: snapshot.data.docs.length, itemBuilder: (context,index){
+          DocumentSnapshot ds=snapshot.data.docs[index];
+          return  Container(
+                    padding:EdgeInsets.only(bottom: 15,left: 20,right: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Column(children: [
+                      SizedBox(height: 20.0,),
+                      Image.network(
+                        ds["Image"],
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(height: 10,),
+                      Text(ds["Name"],
+                          style: TextStyle(
+                                          color: Colors.black54, fontSize: 15.0, fontWeight: FontWeight.bold),),
+                      SizedBox(height: 20,),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                             Text("Rs "+ds["Price"],
+                                  style:TextStyle(
+                                              color: Color(0xFFfd6f3e),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),),
+                            
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(image: ds["Image"], name: ds["Name"], detail: ds["Details"], price: ds["Price"])));
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFFD6F3E),
+                                      borderRadius: BorderRadius.circular(7)),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                            )
+                          ],
+                        ),
+                      )
+                    ]),
+                  );
+        }):Container();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -225,134 +288,16 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   height: 230,
-                  child: ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(children: [
-                          Image.asset(
-                            "images/headphone2.png",
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                          Text("Headphone",
-                              style: AppWidget.semiboldTextFeildStyle()),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("\$ 500",
-                                  style: AppWidget.orangeSemiboldTextFeildStyle()),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFFFD6F3E),
-                                      borderRadius: BorderRadius.circular(7)),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ))
-                            ],
-                          )
-                        ]),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(children: [
-                          Image.asset(
-                            "images/watch2.png",
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                          Text("Apple watch",
-                              style: AppWidget.semiboldTextFeildStyle()),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("\$ 100",
-                                  style: AppWidget.orangeSemiboldTextFeildStyle()),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFFFD6F3E),
-                                      borderRadius: BorderRadius.circular(7)),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ))
-                            ],
-                          )
-                        ]),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(children: [
-                          Image.asset(
-                            "images/laptop2.png",
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                          Text("laptop", style: AppWidget.semiboldTextFeildStyle()),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("\$ 1000",
-                                  style: AppWidget.orangeSemiboldTextFeildStyle()),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFFFD6F3E),
-                                      borderRadius: BorderRadius.circular(7)),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ))
-                            ],
-                          )
-                        ]),
-                      )
-                    ],
-                  ),
+                  child:Column(
+          children: [
+            Expanded(child: allProducts())
+          ],
+        ),
                 )
               ],
             ),
           ),
       ),
-
     );
   }
 }
@@ -392,3 +337,5 @@ class categoryTile extends StatelessWidget {
     );
   }
 }
+
+

@@ -37,6 +37,10 @@ class DatabaseMethods {
 
     return await FirebaseFirestore.instance.collection(category).snapshots();
   }
+  Future<Stream<QuerySnapshot>>getAllProducts()async{
+
+    return await FirebaseFirestore.instance.collection("Products").snapshots();
+  }
 
   Future<Stream<QuerySnapshot>>getOrders(String email)async{
 
