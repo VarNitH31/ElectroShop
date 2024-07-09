@@ -1,3 +1,4 @@
+import 'package:electroshop/Admin/admin_login.dart';
 import 'package:electroshop/pages/bottomnav.dart';
 import 'package:electroshop/services/database.dart';
 import 'package:electroshop/services/shared_preference.dart';
@@ -39,7 +40,7 @@ class _SignupState extends State<Signup> {
             "Name":namecontroller.text,
             "Email":mailcontroller.text,
             "Id":Id,
-            "Image":"https://www.bing.com/images/search?view=detailV2&ccid=E2zFDYn5&id=76EB81ACBCD3F7350CA8F5D1267CC3CD2E8B732C&thid=OIP.E2zFDYn5F-6Lggs5u6qY1AHaHa&mediaurl=https%3a%2f%2fwww.shareicon.net%2fdata%2f512x512%2f2016%2f05%2f24%2f770117_people_512x512.png&exph=512&expw=512&q=person+profile+image+animated&simid=608027448453367246&FORM=IRPRST&ck=E95B3265BFCC10C203E96192FAB99BDB&selectedIndex=0&itb=1&idpp=overlayview&ajaxhist=0&ajaxserp=0"
+            "Image":"gs://electroshop-95ba9.appspot.com/770117_people_512x512.png"
           };
           await DatabaseMethods().addUserDetails(userInfoMap, Id);
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomnav()));
@@ -227,9 +228,24 @@ class _SignupState extends State<Signup> {
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
                     },
-                    child: Text("  Sign in",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),))
+                    child: Text("  Sign in",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),)),
+                    SizedBox(height: 25,),
                  ],
-                )
+                ),
+                    Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                  Text("Admin Login?",style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold) ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminLogin()));
+                    },
+                    child: Text("Admin Login",style: TextStyle(color: Colors.blue, fontSize:18,fontWeight: FontWeight.bold ),))
+                 ]),
+                 SizedBox(height: 20,)
               ],
             ),
           ),

@@ -1,4 +1,6 @@
 import 'package:electroshop/pages/bottomnav.dart';
+import 'package:electroshop/services/database.dart';
+import 'package:electroshop/services/shared_preference.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:electroshop/pages/signup.dart';
@@ -13,6 +15,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String? email="",password="";
+  String? username;
   
   TextEditingController mailcontroller=new TextEditingController();
   TextEditingController passwordcontroller=new TextEditingController();
@@ -23,23 +26,25 @@ class _LoginState extends State<Login> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email!, password: password!);
-      
+      await SharedPreferenceHelper().saveUserEmail(email!);  
+      username=await DatabaseMethods().searchName(email!);    
+      await SharedPreferenceHelper().saveUserName(username!);
+
       Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomnav()));
 
     }on FirebaseAuthException catch (e) {
-      if(e.code=='user-not-found'){
+      print(e.code);
+      if(e.code=="user-not-found"){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
         content: Text("User not found",style: TextStyle(fontSize: 20),)));
       }
-      else if(e.code=='wrong-password'){ 
+      else if(e.code=="invalid-credential"){ 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
-        content: Text("Incorrect password",style: TextStyle(fontSize: 20),)));}
+        content: Text("Invalid credentials",style: TextStyle(fontSize: 20),)));}
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +173,7 @@ class _LoginState extends State<Login> {
                                 child: Center(
                                   child: Text(
                                     "LOGIN",
-                                    style: TextStyle(
+                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
