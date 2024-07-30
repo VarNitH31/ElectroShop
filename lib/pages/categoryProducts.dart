@@ -97,6 +97,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
       backgroundColor: Color.fromARGB(255, 226, 222, 222),
       appBar: AppBar(
       backgroundColor: Color.fromARGB(255, 226, 222, 222),
+      
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
