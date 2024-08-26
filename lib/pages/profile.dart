@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:electroshop/pages/address.dart';
 import 'package:electroshop/pages/onboarding.dart';
 import 'package:electroshop/services/auth.dart';
 import 'package:electroshop/services/shared_preference.dart';
 import 'package:electroshop/widget/support_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
@@ -38,8 +40,8 @@ class _ProfileState extends State<Profile> {
 
   Future getImage() async {
     var image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image!=null) {
-    selectedImage = File(image.path);
+    if (image != null) {
+      selectedImage = File(image.path);
     }
     uploadItem();
     setState(() {});
@@ -62,7 +64,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 226, 222, 222),
-        title:  Text("Profile", style: AppWidget.boldTextFeildStyle()),
+        title: Text("Profile", style: AppWidget.boldTextFeildStyle()),
       ),
       backgroundColor: Color.fromARGB(255, 226, 222, 222),
       body: name == null
@@ -72,147 +74,250 @@ class _ProfileState extends State<Profile> {
                 children: [
                   image != null
                       ? GestureDetector(
-                        onTap: (){
-                                getImage();
-                        },
-                        child: Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60),
-                              child: Image.network(
+                          onTap: () {
+                            getImage();
+                          },
+                          child: Center(
+                              child: ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: Image.network(
                               image!,
                               height: 150,
                               width: 150,
                               fit: BoxFit.cover,
-                              ),
-                            )),
-                      )
+                            ),
+                          )),
+                        )
                       : GestureDetector(
-                        onTap: () {
-                          getImage();
-                        },
-                        child: Center(
-                            child: ClipRRect(
-                                     borderRadius: BorderRadius.circular(60),
-                              child: Image.asset(
+                          onTap: () {
+                            getImage();
+                          },
+                          child: Center(
+                              child: ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: Image.asset(
                               "images/boy.jpg",
                               height: 150,
                               width: 150,
                               fit: BoxFit.cover,
-                                                        ),
-                            )),
-                      ),
-                      SizedBox(height: 20.0,),
-                      Container(
-                        margin: EdgeInsets.only(left: 20,right: 20),
-                        child: Material(
-                          elevation: 3.0,
-                            borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius:BorderRadius.circular(10) ),
-                            child: Row(
+                            ),
+                          )),
+                        ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: Material(
+                      elevation: 3.0,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: 10, right: 10, top: 10, bottom: 10),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.person_2_outlined,
+                              size: 35,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.person_2_outlined,size: 35,),
-                                  SizedBox(width: 10.0,),
-                                  Column(
-                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                                    children: [
-                                      Text("Name",style: AppWidget.lightTextFeildStyle(),),
-                                      Text(name!,style: AppWidget.semiboldTextFeildStyle(),),
-                                    ]
-                                  )
-                                ],
-                            ),
-                          ),
+                                  Text(
+                                    "Name",
+                                    style: AppWidget.lightTextFeildStyle(),
+                                  ),
+                                  Text(
+                                    name!,
+                                    style: AppWidget.semiboldTextFeildStyle(),
+                                  ),
+                                ])
+                          ],
                         ),
                       ),
-                      SizedBox(height: 20.0,),
-                      Container(
-                        margin: EdgeInsets.only(left: 20,right: 20),
-                        child: Material(
-                          elevation: 3.0,
-                            borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius:BorderRadius.circular(10) ),
-                            child: Row(
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: Material(
+                      elevation: 3.0,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: 10, right: 10, top: 10, bottom: 10),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.mail_outlined,
+                              size: 35,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.mail_outlined,size: 35,),
-                                  SizedBox(width: 10.0,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Email",style: AppWidget.lightTextFeildStyle(),),
-                                      Text(email!,style: AppWidget.semiboldTextFeildStyle(),),
-                                    ]
-                                  )
-                                ],
-                            ),
+                                  Text(
+                                    "Email",
+                                    style: AppWidget.lightTextFeildStyle(),
+                                  ),
+                                  Text(
+                                    email!,
+                                    style: AppWidget.semiboldTextFeildStyle(),
+                                  ),
+                                ])
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await AuthMethods().SignOut().then((value) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Onboarding()));
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Material(
+                        elevation: 3.0,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 10, bottom: 10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.logout,
+                                size: 35,
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "LogOut",
+                                style: AppWidget.semiboldTextFeildStyle(),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0,),
-                      GestureDetector(
-                        onTap: ()async{
-                          await AuthMethods().SignOut().then((value){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Onboarding()));
-                          });
-                        },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await AuthMethods().deleteuser().then((value) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Onboarding()));
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Material(
+                        elevation: 3.0,
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: Material(
-                            elevation: 3.0,
-                              borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(color: Colors.white,borderRadius:BorderRadius.circular(10) ),
-                              child: Row(
-                                  children: [
-                                    Icon(Icons.logout,size: 35,),
-                                    SizedBox(width: 10.0,),
-                                    Text("LogOut",style: AppWidget.semiboldTextFeildStyle(),),
-                                    Spacer(),
-                                    Icon(Icons.arrow_forward_ios_outlined),
-                                  ],
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 10, bottom: 10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                size: 35,
                               ),
-                            ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "Delete Account",
+                                style: AppWidget.semiboldTextFeildStyle(),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0,),
-                      GestureDetector(
-                        onTap: ()async{
-                          await AuthMethods().deleteuser().then((value){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Onboarding()));
-                          });
-                        },
-
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Addresses()));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Material(
+                        elevation: 3.0,
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: Material(
-                            elevation: 3.0,
-                              borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(color: Colors.white,borderRadius:BorderRadius.circular(10) ),
-                              child: Row(
-                                  children: [
-                                    Icon(Icons.delete,size: 35,),
-                                    SizedBox(width: 10.0,),
-                                    Text("Delete Account",style: AppWidget.semiboldTextFeildStyle(),),
-                                    Spacer(),
-                                    Icon(Icons.arrow_forward_ios_outlined),
-                                  ],
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 10, bottom: 10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_history_outlined,
+                                size: 35,
                               ),
-                            ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "ADD address",
+                                style: AppWidget.semiboldTextFeildStyle(),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined),
+                            ],
                           ),
                         ),
-                      )
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

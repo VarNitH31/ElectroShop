@@ -20,6 +20,11 @@ class DatabaseMethods {
         .collection("Products")
         .add(userInfoMap);
   }
+  Future addAddress(Map<String, dynamic> userInfoMap) async {
+    return await FirebaseFirestore.instance
+        .collection("Address")
+        .add(userInfoMap);
+  }
 
   updatestatus(String id) async {
     return await FirebaseFirestore.instance
