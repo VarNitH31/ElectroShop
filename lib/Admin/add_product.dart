@@ -5,7 +5,6 @@ import 'package:electroshop/services/database.dart';
 import 'package:electroshop/widget/support_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 

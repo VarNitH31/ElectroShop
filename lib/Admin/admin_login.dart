@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electroshop/Admin/home_admin.dart';
 import 'package:electroshop/widget/support_widget.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AdminLogin extends StatefulWidget {

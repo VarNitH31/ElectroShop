@@ -2,10 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electroshop/pages/productDetail.dart';
 import 'package:electroshop/services/database.dart';
-import 'package:electroshop/widget/support_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CategoryProducts extends StatefulWidget {
   String category;

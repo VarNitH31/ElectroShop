@@ -4,7 +4,6 @@ import 'package:electroshop/pages/productDetail.dart';
 import 'package:electroshop/services/database.dart';
 import 'package:electroshop/services/shared_preference.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:electroshop/widget/support_widget.dart';
 
 bool search = false;

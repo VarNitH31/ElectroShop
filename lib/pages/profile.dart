@@ -39,7 +39,7 @@ class _ProfileState extends State<Profile> {
   Future getImage() async {
     var image = await _picker.pickImage(source: ImageSource.gallery);
     if (image!=null) {
-    selectedImage = File(image!.path);
+    selectedImage = File(image.path);
     }
     uploadItem();
     setState(() {});
