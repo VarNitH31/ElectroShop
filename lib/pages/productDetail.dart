@@ -21,27 +21,22 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  String? name, mail, image;
 
-  String? name,mail,image;
+  getthesharedpref() async {
+    name = await SharedPreferenceHelper().getUserName();
+    mail = await SharedPreferenceHelper().getUserEmail();
+    image = await SharedPreferenceHelper().getUserImage();
 
-  getthesharedpref()async{
-    name=await SharedPreferenceHelper().getUserName();
-    mail=await SharedPreferenceHelper().getUserEmail();
-    image=await SharedPreferenceHelper().getUserImage();
-
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
-  ontheload()async{
+  ontheload() async {
     await getthesharedpref();
-    setState(() {
-      
-    });
+    setState(() {});
   }
- 
- @override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -60,19 +55,21 @@ class _ProductDetailState extends State<ProductDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                      margin: EdgeInsets.only(left: 20),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Icon(Icons.arrow_back_ios_new_outlined))),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Icon(Icons.arrow_back_ios_new_outlined))),
+          
               Center(
                   child: Container(
+                    margin: EdgeInsets.only(top: 50),
                       height: 300,
                       width: 300,
                       child: Image.network(
@@ -82,72 +79,78 @@ class _ProductDetailState extends State<ProductDetail> {
                       )))
             ]),
             Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
-                ),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(top: 20, left: 20, right: 20,bottom: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  child:Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.name,
-                          style: AppWidget.boldTextFeildStyle(),
+                        Wrap(
+                          spacing:
+                              10.0, // Optional: Adds space between the children
+                          alignment: WrapAlignment
+                              .spaceBetween, // Aligns items in the line
+                          children: [
+                            Text(
+                              widget.name,
+                              style: AppWidget.boldTextFeildStyle(),
+                            ),
+                            Text(
+                              "Rs " + widget.price,
+                              style: TextStyle(
+                                color: Color(0xFFfd6f3e),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Rs "+widget.price,
-                          style: TextStyle(
-                              color: Color(0xFFfd6f3e),
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        // Text(
+                        //   widget.detail,
+                        //   style: AppWidget.semiboldTextFeildStyle(),
+                        // ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
+                        Text(widget.detail),
+                        SizedBox(
+                          height: 75,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            makePayment(widget.price);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFfd6f3e),
+                                borderRadius: BorderRadius.circular(10)),
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                                child: Text(
+                              "Buy Now",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                          ),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Text(
-                      widget.detail,
-                      style: AppWidget.semiboldTextFeildStyle(),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(widget.detail),
-                    SizedBox(
-                      height: 75,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        makePayment(widget.price);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFfd6f3e),
-                            borderRadius: BorderRadius.circular(10)),
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                            child: Text(
-                          "Buy Now",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    )
-                  ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -174,14 +177,14 @@ class _ProductDetailState extends State<ProductDetail> {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
-        Map<String,dynamic> orderInfoMap={
-          "Product":widget.name,
-          "Price":widget.price,
-          "username":name,
-          "email":mail,
-          "user_image":image,
-          "product_image":widget.image,
-          "Status":"On the way"
+        Map<String, dynamic> orderInfoMap = {
+          "Product": widget.name,
+          "Price": widget.price,
+          "username": name,
+          "email": mail,
+          "user_image": image,
+          "product_image": widget.image,
+          "Status": "On the way"
         };
         await DatabaseMethods().orderDetails(orderInfoMap);
         showDialog(
@@ -215,26 +218,30 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
- createPaymentIntent(String amount,String currency)async{
-  try {
-    Map<String,dynamic> body={
-      'amount':calculateAmount(amount),
-      'currency':currency,
-      'payment_method_types[]':'card'
-    };
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+        'payment_method_types[]': 'card'
+      };
 
-    var response= await http.post
-            (Uri.parse("https://api.Stripe.com/v1/payment_intents"),
-            headers:{'Authorization':'Bearer $secretKey','Content-Type':'application/x-www-form-urlencoded'},body: body,);
-            return jsonDecode(response.body);
-  } catch (e) {
-    print("err cahrnging user: ${e.toString()}");
+      var response = await http.post(
+        Uri.parse("https://api.Stripe.com/v1/payment_intents"),
+        headers: {
+          'Authorization': 'Bearer $secretKey',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return jsonDecode(response.body);
+    } catch (e) {
+      print("err cahrnging user: ${e.toString()}");
+    }
   }
- }
 
- calculateAmount(String amount){
-  final calculatedAmount=(int.parse(amount)*100);
-  return calculatedAmount.toString();
- }
-
+  calculateAmount(String amount) {
+    final calculatedAmount = (int.parse(amount) * 100);
+    return calculatedAmount.toString();
+  }
 }

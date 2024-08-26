@@ -124,66 +124,75 @@ class _HomeState extends State<Home> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
-                      child: Column(children: [
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Image.network(
-                          ds["Image"],
-                          height: 150,
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          ds["Name"],
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Image.network(
+                            ds["Image"],
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            ds["Name"],
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Wrap(
+                            spacing: 10.0, // Adds space between the children
+                            runSpacing:
+                                5.0, // Adds space between lines when wrapping occurs
+                            alignment: WrapAlignment
+                                .spaceBetween, // Aligns items in the line
                             children: [
                               Text(
                                 "Rs " + ds["Price"],
                                 style: TextStyle(
-                                    color: Color(0xFFfd6f3e),
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold),
+                                  color: Color(0xFFfd6f3e),
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              Spacer(),
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ProductDetail(
-                                              image: ds["Image"],
-                                              name: ds["Name"],
-                                              detail: ds["Details"],
-                                              price: ds["Price"])));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetail(
+                                        image: ds["Image"],
+                                        name: ds["Name"],
+                                        detail: ds["Details"],
+                                        price: ds["Price"],
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Container(
-                                    padding: EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFFFD6F3E),
-                                        borderRadius: BorderRadius.circular(7)),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    )),
-                              )
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFFD6F3E),
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ],
-                          ),
-                        )
-                      ]),
+                          )
+                        ]),
+                      ),
                     );
                   })
               : Container();
@@ -256,7 +265,8 @@ class _HomeState extends State<Home> {
                               prefixIcon: GestureDetector(
                                   onTap: () {
                                     if (searchvalue != null) {
-                                      initiateSearch(searchvalue!.toUpperCase());
+                                      initiateSearch(
+                                          searchvalue!.toUpperCase());
                                       search = true;
                                     } else
                                       search = false;
@@ -381,7 +391,14 @@ class _HomeState extends State<Home> {
   Widget buildResultCard(data) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>ProductDetail(image: data["Image"], name: data["Name"], detail: data["Details"], price: data["Price"])));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetail(
+                    image: data["Image"],
+                    name: data["Name"],
+                    detail: data["Details"],
+                    price: data["Price"])));
       },
       child: SingleChildScrollView(
         child: Container(
@@ -389,9 +406,7 @@ class _HomeState extends State<Home> {
           margin: EdgeInsets.only(bottom: 7),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)
-          ),
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
           height: 80,
           child: Row(
             children: [

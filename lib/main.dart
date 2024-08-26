@@ -1,3 +1,4 @@
+import 'package:electroshop/pages/categoryProducts.dart';
 import 'package:electroshop/pages/onboarding.dart';
 import 'package:electroshop/services/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
-      home: Onboarding(),
+      home: Bottomnav(),
     );
   }
 }
