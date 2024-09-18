@@ -1,6 +1,7 @@
 # electroshop
 
 A new Flutter project.
+An all electronic ecommerce website
 
 ## Getting Started
 
